@@ -1,260 +1,151 @@
-# 🧬 Single-Cell Multi-Omics Analysis: Human PBMC RNA and ATAC
+# 🧬 Single-Cell Multi-Omics Analysis: Human PBMC RNA & ATAC
 
-A hands-on bioinformatics project exploring the integration of multiple single-cell data modalities using real 10x Genomics data.
+A hands-on bioinformatics project using real **10x Genomics PBMC multiome data** to explore single-cell RNA expression and ATAC peak annotations.
 
-This project focuses on understanding how **gene expression** and **chromatin accessibility** can be explored together in a single-cell multi-omics workflow.
+## 🎯 Objectives
 
----
-
-## 🎯 Project Objectives
-
-* Learn the fundamentals of single-cell multi-omics analysis.
-* Work with real 10x Genomics multiome data.
-* Explore RNA and ATAC modalities.
-* Understand the relationship between chromatin accessibility and gene expression.
-* Build reproducible and lightweight bioinformatics workflows.
-* Develop a GitHub portfolio project using Python and modern single-cell analysis tools.
-
----
+* Analyze single-cell RNA-seq data using **Scanpy**
+* Explore ATAC peak annotations and genomic regions
+* Compare RNA genes with ATAC-associated genes
+* Perform QC, normalization, PCA, UMAP and clustering
+* Identify marker genes and perform tentative cell-type annotation
+* Build a lightweight, reproducible Python workflow
 
 ## 🧪 Dataset
 
-This project uses the **PBMC from a healthy donor with granulocytes removed through cell sorting (3k)** dataset generated using the **10x Genomics Cell Ranger ARC pipeline**.
+**PBMC from a healthy donor with granulocytes removed (3k)** from 10x Genomics.
 
-### Dataset components used
+Current downloaded data:
 
-| Data                  | Description                                             |
-| --------------------- | ------------------------------------------------------- |
-| RNA expression matrix | Cell × gene expression data                             |
-| ATAC peaks            | Genomic regions associated with chromatin accessibility |
-| ATAC peak annotation  | Peak-to-gene annotations                                |
+* RNA expression matrix
+* ATAC peak coordinates
+* ATAC peak-to-gene annotations
 
-### Dataset size
+**RNA:** 2,711 cells × 36,601 features
+**Filtered RNA:** 2,645 cells
+**Highly variable genes:** 2,000
+**Leiden clusters:** 10
 
-To keep the workflow suitable for a laptop with limited memory, only lightweight files are used.
+> ⚠️ The current dataset does not contain the cell × ATAC peak accessibility matrix. Therefore, this project currently focuses on **single-cell RNA analysis and gene-level RNA–ATAC exploration**, rather than full cell-level multiome integration.
 
-The large ATAC fragment file is intentionally not downloaded.
+## 🧬 RNA-seq Workflow
 
----
+```text
+RNA Matrix
+   ↓
+Quality Control
+   ↓
+Filtering
+   ↓
+Normalization
+   ↓
+Highly Variable Genes
+   ↓
+PCA
+   ↓
+UMAP
+   ↓
+Leiden Clustering
+   ↓
+Marker Genes
+   ↓
+Cell-Type Annotation
+```
 
-## 📊 Current Dataset
+### QC filtering
 
-### RNA Data
+```text
+n_genes_by_counts > 200
+n_genes_by_counts < 6000
+pct_counts_mt < 20
+```
 
-* **Cells:** 2,711
-* **Features:** 36,601
-* **Unique gene names:** 36,591
-* **Duplicate gene names:** 10
-* **Feature type:** Gene Expression
+**2,645 cells retained (97.57%)**
 
-The RNA data is stored as a 10x Genomics `.h5` file.
+## 🔗 RNA–ATAC Exploration
 
----
+RNA genes were compared with genes associated with ATAC peak annotations.
 
-### ATAC Data
+| Category              | Result |
+| --------------------- | -----: |
+| RNA genes             | 36,591 |
+| ATAC-associated genes | 27,844 |
+| Shared genes          | 27,844 |
 
-The ATAC annotation contains:
+ATAC annotations included **promoter, distal and intergenic** regions.
 
-* **125,117 peak annotations**
-* **98,319 unique genomic peaks**
+## 📊 Outputs
 
-Peak annotations are classified as:
+### Figures
 
-* Promoter
-* Distal
-* Intergenic
-
----
-
-## 🔗 RNA–ATAC Gene-Level Analysis
-
-The project compares genes detected in the RNA dataset with genes associated with ATAC peaks.
+```text
+figures/
+├── QC plots
+├── PCA / UMAP plots
+├── cluster plots
+├── marker gene plots
+└── cell-type UMAP
+```
 
 ### Results
 
-| Category                     | Result |
-| ---------------------------- | -----: |
-| Unique RNA genes             | 36,591 |
-| Unique ATAC-associated genes | 27,844 |
-| Shared RNA–ATAC genes        | 27,844 |
-
-### ATAC Peak Summary
-
-| Peak Type  | Annotation Rows | Unique Associated Genes | Genes Present in RNA |
-| ---------- | --------------: | ----------------------: | -------------------: |
-| Promoter   |          21,144 |                  18,279 |               18,279 |
-| Distal     |         103,452 |                  23,884 |               23,884 |
-| Intergenic |             521 |                       0 |                    0 |
-
----
-
-## 🧬 Workflow
-
 ```text
-10x Genomics Multiome Dataset
-            │
-            ├───────────────┐
-            │               │
-            ▼               ▼
-       RNA Data        ATAC Annotation
-            │               │
-            ▼               ▼
-     Gene Expression    Peak-to-Gene Mapping
-            │               │
-            └───────┬───────┘
-                    │
-                    ▼
-          RNA–ATAC Gene Overlap
-                    │
-                    ▼
-       Promoter / Distal Analysis
+results/
+├── highly_variable_genes.csv
+├── rna_atac_shared_genes.csv
+├── rna_cell_type_annotations.csv
+├── rna_clusters.csv
+├── rna_marker_genes.csv
+├── rna_pca_coordinates.csv
+├── rna_qc_metrics.csv
+└── rna_umap_coordinates.csv
 ```
-
----
 
 ## 📁 Project Structure
 
 ```text
 Single-Cell-Multiomics/
-│
-├── data/
-│   └── raw/
-│       ├── pbmc_granulocyte_sorted_3k_filtered_feature_bc_matrix.h5
-│       │
-│       └── pbmc3k_multiome/
-│           ├── atac_peaks.bed
-│           └── atac_peak_annotation.tsv
-│
+├── data/raw/
+├── figures/
 ├── results/
-│   ├── atac_peak_summary.csv
-│   └── rna_atac_shared_genes.csv
-│
 ├── src/
-│   └── real_multiome.py
-│
+│   ├── real_multiome.py
+│   └── rna_analysis.py
 ├── requirements.txt
 ├── test_installation.py
 └── README.md
 ```
 
----
+## 🛠️ Tools
 
-## 💻 Tools and Libraries
+**Python · Scanpy · AnnData · Muon · MuData · pandas · NumPy · Bash · Linux · WSL · Git · GitHub**
 
-* Python
-* Scanpy
-* AnnData
-* Muon
-* MuData
-* pandas
-* NumPy
-* mudatasets
-
----
-
-## 🚀 Installation
-
-Clone the repository:
+## 🚀 Run
 
 ```bash
-git clone https://github.com/sudharshini-kannan/single-Cell-Multi-Omics.git
-```
+git clone https://github.com/sudharshini-kannan/single-Cell-Multi-Omics-Human-PBMc.git
+cd single-Cell-Multi-Omics-Human-PBMc
 
-Move into the project directory:
-
-```bash
-cd single-Cell-Multi-Omics
-```
-
-Create and activate a virtual environment:
-
-```bash
 python3 -m venv multiomics_env
 source multiomics_env/bin/activate
-```
-
-Install the required packages:
-
-```bash
 pip install -r requirements.txt
-```
 
----
-
-## ▶️ Run the Analysis
-
-```bash
 python src/real_multiome.py
+python src/rna_analysis.py
 ```
 
-The script:
+## 🔮 Future Work
 
-1. Loads the 10x Genomics RNA dataset.
-2. Inspects RNA features and gene information.
-3. Checks duplicate gene names.
-4. Loads ATAC peak annotations.
-5. Identifies genes shared between RNA and ATAC data.
-6. Summarizes promoter, distal, and intergenic peak annotations.
-7. Saves reproducible results.
-
----
-
-## 📈 Output Files
-
-### `results/rna_atac_shared_genes.csv`
-
-Contains genes shared between:
-
-* RNA expression data
-* ATAC peak-associated gene annotations
-
-### `results/atac_peak_summary.csv`
-
-Contains a summary of:
-
-* Peak types
-* Number of annotations
-* Unique associated genes
-* Genes overlapping with RNA data
-
----
-
-## ⚠️ Important Scientific Note
-
-This project currently includes:
-
-* ✅ Cell × gene RNA expression data
-* ✅ ATAC peak coordinates
-* ✅ ATAC peak-to-gene annotations
-
-However, it does **not yet include a cell × ATAC peak accessibility matrix**.
-
-Therefore, the current workflow represents:
-
-> **Gene-level exploration of RNA expression and ATAC peak annotations rather than full cell-level RNA–ATAC integration.**
-
-Future work will focus on lightweight approaches for extending this project toward true multi-modal single-cell integration.
-
----
-
-## 🔮 Future Directions
-
-* RNA quality control and filtering
-* RNA normalization and highly variable gene selection
-* PCA and dimensionality reduction
-* UMAP visualization
-* Cell clustering
-* Cell-type annotation
-* Exploration of lightweight cell-level ATAC data
-* Construction of a MuData object containing multiple modalities
-* RNA–ATAC multi-modal integration
-* Visualization of relationships between chromatin accessibility and gene expression
-
----
+* Cell-level ATAC analysis
+* ATAC QC and peak filtering
+* TF-IDF + LSI
+* MuData construction
+* RNA–ATAC integration
+* Regulatory and promoter analysis
 
 ## 👩‍💻 Author
 
 **Sudharshini Kannan**
-Molecular Biology Researcher | Bioinformatics & Genomics Enthusiast
+*Molecular Biology Researcher | Bioinformatics & Genomics Enthusiast*
 
-GitHub: https://github.com/sudharshini-kannan
+🔗 https://github.com/sudharshini-kannan
