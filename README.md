@@ -100,6 +100,41 @@ results/
 ├── rna_qc_metrics.csv
 └── rna_umap_coordinates.csv
 ```
+## 📊 Results & Visualizations
+
+### 🧬 RNA Quality Control
+
+#### QC Metrics
+
+![RNA QC Metrics](figures/violin_qc_violin.png)
+
+#### QC Scatter Plot
+
+![RNA QC Scatter Plot](figures/scatter_qc_scatter.png)
+
+### 🧩 UMAP & Clustering
+
+#### RNA UMAP
+
+![RNA UMAP](figures/umap_rna.png)
+
+#### Leiden Clusters
+
+![Leiden Clusters](figures/umap_clusters.png)
+
+#### Cell-Type Annotation
+
+![Cell-Type UMAP](figures/umap_cell_types.png)
+
+### 🔬 Marker Gene Analysis
+
+![Marker Genes](figures/rank_genes_groups_leiden_marker_genes.png)
+
+### 🧪 Feature Visualization
+
+![Mitochondrial Genes](figures/umap_mitochondrial.png)
+
+![Number of Genes](figures/umap_n_genes.png)
 
 ## 📁 Project Structure
 
