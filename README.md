@@ -136,6 +136,10 @@ results/
 
 ![Number of Genes](figures/umap_n_genes.png)
 
+## 📊 Project Figures
+
+![Single-Cell Multi-Omics Analysis Results](figures/single_cell_multiomics_collage.png)
+
 ## 📁 Project Structure
 
 ```text
