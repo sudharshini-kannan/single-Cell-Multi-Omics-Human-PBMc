@@ -1,6 +1,6 @@
 # 🧬 Single-Cell Multi-Omics Analysis: Human PBMC RNA & ATAC
 
-A hands-on bioinformatics project using real **10x Genomics PBMC multiome data** to explore single-cell RNA expression and ATAC peak annotations.
+A hands-on bioinformatics project using real **10x Genomics PBMC multiome data** to explore single-cell RNA expression and ATAC peak annotations, with gene-level relationships between the two modalities.
 
 ## 🎯 Objectives
 
